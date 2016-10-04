@@ -1,7 +1,7 @@
+mojowebqq_url => http://127.0.0.1:5000/openqq
 redis_ip => 127.0.0.1
 redis_port => 6379
 redis_pwd => redis_pwd
-mojowebqq_url => http://127.0.0.1:5000/openqq
 mysql_path => mysql:host=localhost;dbname=neko;charset=utf8
 mysql_user => neko
 mysql_pwd => mysql_pwd
