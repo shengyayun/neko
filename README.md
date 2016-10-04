@@ -18,7 +18,16 @@ edit file 'neko/core/config' which desires for your redis and mysql
 
 ##step 4:
 
-create database 'neko' in your mysql,and the table 'lexicon' with its sql below
+excute the sql below in your mysql:
+
+    CREATE DATABASE `neko`  DEFAULT CHARACTER SET utf8;
+
+    CREATE TABLE `neko`.`task` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `time` varchar(20) NOT NULL,
+      `msg` varchar(255) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
     CREATE TABLE `neko`.`lexicon` (
       `id` int(11) NOT NULL AUTO_INCREMENT,

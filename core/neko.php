@@ -64,17 +64,11 @@ class Neko
      */
     public function interval()
     {
-        $msg = false;
-        switch(date('H:i'))
+        $rs = $this->db->select("select msg from task where time = '" . date('H:i') . "'");
+        foreach ($rs as $row)
         {
-            case "07:00": $msg = "起床啦！"; break;
-            case "08:00": $msg = "丝丝快码字！"; break;
-            case "09:00": $msg = "丝丝快更新求票啦! http://langdaren.com/rank.php"; break;
-            case "20:00": $msg = "http://www.sndream.cn/book/63669 快去投票了！"; break;
-            case "21:00": $msg = "丝丝别码字啦，快来打游戏！"; break;
-            case "22:00": $msg = "最后冒泡，冒完睡觉"; break;
+            $this->broadcast($row['msg']);
         }
-        $this->broadcast($msg);
     }
 
     /**
