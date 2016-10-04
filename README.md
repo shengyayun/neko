@@ -1,4 +1,4 @@
-# neko
+# neko preview
 little and easy robot bases on mojo-webqq
 
 ##step 1:
