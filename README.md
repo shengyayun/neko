@@ -47,7 +47,7 @@ and the nohup.out will tell you that you need scan the qrcode.when you done,the 
 
 
 ##step 8:
-you found that this README is mess and you fail everywhere,but you are really intersted in it.ok,my qq is 719048774.
+you found that this README is messy and you fail everywhere,but you are really intersted in it.ok,my qq is 719048774.
 
 
 
