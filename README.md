@@ -39,7 +39,7 @@ Excute the sql below in your mysql:
 
 ##step 5:
 
-Put folder `neko` into your website root, so the mojo-webqq can access like this `http://127.0.0.1/neko/core/sapi.php`
+Put folder `neko` into your website root, so the mojo-webqq can access it in `http://127.0.0.1/neko/core/sapi.php`
 
 
 ##step 6:
@@ -52,6 +52,7 @@ It runs `/path/to/your/neko/main.php` every minute, and this path is not real, i
 ##step 7:
 
 Excute `nohup perl /path/to/your/neko/neko.pl &`
+
 and the nohup.out will tell you that you need scan the qrcode.when you done, the robot is on
 
 
@@ -59,4 +60,4 @@ and the nohup.out will tell you that you need scan the qrcode.when you done, the
 
 You found that this README is messy and you fail everywhere, but you are really intersted in it
 
-Ok, my email is 719048774@qq.com
+OK, my email is 719048774@qq.com
