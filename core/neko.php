@@ -17,7 +17,7 @@ class Neko
             error_reporting(-1);
         }
         //配置
-        $file = __DIR__ . "/config";
+        $file = ROOT . "/core/config";
         if(!file_exists($file))
         {
             echo "put your config at '$file'";
@@ -31,7 +31,7 @@ class Neko
         }
         define('CONFIG', json_encode($config));
         //扩展
-        $folder = __DIR__ . "/ext/";
+        $folder = ROOT . "/core/ext/";
         foreach (scandir($folder) as $path) 
         {
             $file = $folder . $path;

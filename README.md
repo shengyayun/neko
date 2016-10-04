@@ -1,24 +1,24 @@
-# neko preview
-little and easy robot which based on mojo-webqq
+# Neko-preview
+Little and easy robot which based on mojo-webqq
 
 ##step 1:
 
-build this [Mojo-Webqq](https://github.com/sjdy521/Mojo-Webqq) on your linux by cpanm
+Build this [Mojo-Webqq](https://github.com/sjdy521/Mojo-Webqq) on your linux by cpanm
 
 
 ##step 2:
 
-edit 'neko/neko.pl' for your qq, this file can start your mojo-webq
+Edit `neko/neko.pl` for your qq, this file can start your mojo-webq
 
 
 ##step 3:
 
-edit file 'neko/core/config' which desires for your redis and mysql
+Edit file `neko/core/config` which desires for your redis and mysql
 
 
 ##step 4:
 
-excute the sql below in your mysql:
+Excute the sql below in your mysql:
 
     CREATE DATABASE `neko`  DEFAULT CHARACTER SET utf8;
 
@@ -39,24 +39,26 @@ excute the sql below in your mysql:
 
 ##step 5:
 
-put folder 'neko' into your website root, 
+Put folder `neko` into your website root, 
 
-so the mojo-webqq can access like this 'http://127.0.0.1/neko/core/sapi.php'
+So the mojo-webqq can access like this http://127.0.0.1/neko/core/sapi.php
 
 
 ##step 6:
-add a crontab "* * * * * php /path/to/your/neko/main.php"
 
-it runs '/path/to/your/neko/main.php' every minute, and this path is not real, it only means the real path of my 'neko/main.php' on your linux
+Add a crontab `* * * * * php /path/to/your/neko/main.php`
+
+It runs `/path/to/your/neko/main.php` every minute, and this path is not real, it only means the real path of my `neko/main.php` on your linux
 
 
 ##step 7:
-excute "nohup perl /path/to/your/neko/neko.pl &"
+
+Excute `nohup perl /path/to/your/neko/neko.pl &`
 and the nohup.out will tell you that you need scan the qrcode.when you done, the robot is on
 
 
 ##step 8:
-you found that this README is messy and you fail everywhere, but you are really intersted in it.ok, my qq is 719048774.
 
+You found that this README is messy and you fail everywhere, but you are really intersted in it
 
-
+Ok, my email is 719048774@qq.com

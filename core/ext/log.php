@@ -11,7 +11,7 @@ class NekoLog
      */
     public function write($msg)
     {
-        $folder = dirname(dirname(__DIR__)) . "/log/";
+        $folder = ROOT . "/log/";
         if(!is_dir($folder)) mkdir($folder);
         $path = $folder . date('Y-m-d') . ".txt";
         file_put_contents($path, date("Y-m-d H:i:s") . "\t" . $msg . "\r\n", FILE_APPEND);
