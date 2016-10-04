@@ -39,9 +39,7 @@ Excute the sql below in your mysql:
 
 ##step 5:
 
-Put folder `neko` into your website root, 
-
-So the mojo-webqq can access like this http://127.0.0.1/neko/core/sapi.php
+Put folder `neko` into your website root, so the mojo-webqq can access like this `http://127.0.0.1/neko/core/sapi.php`
 
 
 ##step 6:
