@@ -38,7 +38,7 @@ Excute the sql below in your mysql:
 
     insert into `neko`.`task` (`time`, `msg`) values ('22:00', '最后冒泡，冒完睡觉');
 
-    insert into `neko`.`lexicon` (`key`, `value`) values ('*愚蠢的丝丝*', '*天真的丝丝*');
+    insert into `neko`.`lexicon` (`key`, `value`) values ('*愚蠢的丝丝*', '[1]天真的丝丝[2]');
 
 
 ##step 5:
