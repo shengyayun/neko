@@ -99,33 +99,83 @@ class Neko
     {
         $msg = $this->cache->pop();
         if(!$msg) return;
+        $result = null;
         $this->log->write(str_replace(array("\r", "\n", "\r\n"), "", var_export($msg, true)) . "\r\n");
-        $rs = $this->db->select("select * from lexicon");
-        $list = array();
-        foreach ($rs as $row) 
+        //特殊操作
+        if(preg_match("/^#\!([^\+\-]+)([\+\-]){([\s\S]+?)}$/", $msg['content'], $matches))
         {
-            if(!preg_match($this->blur2regex($row['key']), $msg['content'], $match)) continue;
-            $value = $row['value'];
-            foreach ($match as $index => $holder)
+            $result = 'copy fail';
+            $table = "`" . $matches[1] . "`";
+            $params =  explode(',', $matches[3]);
+            $conditions = array();
+            foreach ($params as $param)
             {
-                if($index == 0) continue;
-                $value = str_ireplace("[$index]", $match[$index], $value);
+                $items = explode(':', addslashes($param));
+                $key = array_shift($items);
+                $conditions['`' . $key . '`'] = implode(':', $items);
             }
-            $list[] = $value;
+            $sql = false;
+            $bind = array_values($conditions);
+            switch ($matches[2]) {
+                case '+':
+                    $holder = array();
+                    for ($i = 0; $i < count($conditions); $i++)
+                    { 
+                        $holder[] = "?";
+                    }
+                    $sql = "insert into $table (" . implode(',', array_keys($conditions)) . ") values (" 
+                        . implode(',', $holder) . ")";
+                    break;
+                case '-':
+                    $where = array();
+                    foreach ($conditions as $key => $value) 
+                    {
+                        $where[] = "$key = ?";
+                    }
+                    $sql = "delete from $table where " . implode(' and ', $where);
+                    break;
+                default:
+                    break;
+            }
+            if($sql !== false)
+            {
+               if($this->db->query($sql, $bind) !== false)
+               {
+                    $result = "copy that";
+               }
+            }
         }
-        if(count($list) == 0) return;
-        shuffle($list);
-        $reply = $list[0];
+        //基于词条的对话
+        else
+        {
+            $rs = $this->db->select("select * from lexicon");
+            $list = array();
+            foreach ($rs as $row) 
+            {
+                if(!preg_match($this->blur2regex($row['key']), $msg['content'], $match)) continue;
+                $value = $row['value'];
+                foreach ($match as $index => $holder)
+                {
+                    if($index == 0) continue;
+                    $value = str_ireplace("[$index]", $match[$index], $value);
+                }
+                $list[] = $value;
+            }
+            if(count($list) == 0) return;
+            shuffle($list);
+            $result = $list[0];
+        }
+        //分类回复
         switch($msg['type'])
         {
             case 'message': 
-                $this->api->sendMessage($msg['sender_qq'], $reply);
+                $this->api->sendMessage($msg['sender_qq'], $result);
                 break;
             case 'discuss_message': 
-                $this->api->sendDiscussMessage($msg['discuss_id'], $reply);
+                $this->api->sendDiscussMessage($msg['discuss_id'], $result);
                 break;
             case 'group_message': 
-                $this->api->sendGroupMessage($msg['gnumber'], $reply);
+                $this->api->sendGroupMessage($msg['gnumber'], $result);
                 break;
         }
     }
