@@ -36,6 +36,10 @@ Excute the sql below in your mysql:
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+    insert into `neko`.`task` (`time`, `msg`) values ('22:00', '最后冒泡，冒完睡觉');
+
+    insert into `neko`.`lexicon` (`key`, `value`) values ('*愚蠢的丝丝*', '*天真的丝丝*');
+
 
 ##step 5:
 
