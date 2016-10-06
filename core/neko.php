@@ -123,8 +123,7 @@ class Neko
                     { 
                         $holder[] = "?";
                     }
-                    $sql = "insert into $table (" . implode(',', array_keys($conditions)) . ") values (" 
-                        . implode(',', $holder) . ")";
+                    $sql = "insert into $table (" . implode(',', array_keys($conditions)) . ") values (" . implode(',', $holder) . ")";
                     break;
                 case '-':
                     $where = array();
@@ -164,6 +163,10 @@ class Neko
             if(count($list) == 0) return;
             shuffle($list);
             $result = $list[0];
+        }
+        foreach ($msg as $holder => $item)
+        {
+            $result = str_ireplace("[" . $holder . "]", $item, $result);
         }
         //分类回复
         switch($msg['type'])
