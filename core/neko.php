@@ -37,9 +37,10 @@ class Neko
             $file = $folder . $path;
             if(is_file($file))
             {
-                $this->{basename($path, '.php')} = require $file;
+                $this->{basename($path, '.php')} = require_once $file;
             }
         }
+        $this->context = $this->context();
     }
 
     /**
@@ -52,9 +53,26 @@ class Neko
         $current = date('i');
         while($current == date('i'))
         {
-            usleep(500000);
+            usleep(100000);
             $this->poll();
         }
+    }
+
+    /**
+     * 上下文
+     * @return [type] [description]
+     */
+    public function context()
+    {
+        $result = array();
+
+        $list = $this->api->getGroupBasicInfo();
+        $result['group_base_info'] = array();
+        foreach ($list as $row)
+        {
+            $result['group_base_info'][$row['gnumber']] = $row;
+        }
+        return $result;
     }
 
 
@@ -85,11 +103,11 @@ class Neko
             }
             foreach ($this->api->getGroupInfo() as $group) 
             {
+                if(!in_array($group['gnumber'], [12490514])) continue;
                 $this->api->sendGroupMessage($group['gnumber'], $msg);
             }
         }
     }
-
 
     /**
      * 心跳,每秒钟跑一次
@@ -97,18 +115,17 @@ class Neko
      */
     public function poll()
     {
-        $msg = $this->cache->pop();
-        if(!$msg) return;
+        $params = $this->cache->pop();
+        if(!$params) return;
         $result = null;
-        $this->log->write(str_replace(array("\r", "\n", "\r\n"), "", var_export($msg, true)) . "\r\n");
+        $this->log->write(str_replace(array("\r", "\n", "\r\n"), "", var_export($params, true)) . "\r\n");
         //特殊操作
-        if(preg_match("/^#\!([^\+\-]+)([\+\-]){([\s\S]+?)}$/", $msg['content'], $matches))
+        if(preg_match("/^#\!([^\+\-]+)([\+\-]){([\s\S]+?)}$/", $params['content'], $matches))
         {
             $result = 'copy fail';
             $table = "`" . $matches[1] . "`";
-            $params =  explode(',', $matches[3]);
             $conditions = array();
-            foreach ($params as $param)
+            foreach (explode(',', $matches[3]) as $param)
             {
                 $items = explode(':', addslashes($param));
                 $key = array_shift($items);
@@ -116,7 +133,8 @@ class Neko
             }
             $sql = false;
             $bind = array_values($conditions);
-            switch ($matches[2]) {
+            switch ($matches[2])
+            {
                 case '+':
                     $holder = array();
                     for ($i = 0; $i < count($conditions); $i++)
@@ -140,7 +158,7 @@ class Neko
             {
                if($this->db->query($sql, $bind) !== false)
                {
-                    $result = "copy that";
+                    $result = "copy";
                }
             }
         }
@@ -151,7 +169,7 @@ class Neko
             $list = array();
             foreach ($rs as $row) 
             {
-                if(!preg_match($this->blur2regex($row['key']), $msg['content'], $match)) continue;
+                if(!preg_match($this->blur2regex($row['key']), $params['content'], $match)) continue;
                 $value = $row['value'];
                 foreach ($match as $index => $holder)
                 {
@@ -164,21 +182,23 @@ class Neko
             shuffle($list);
             $result = $list[0];
         }
-        foreach ($msg as $holder => $item)
+        foreach ($params as $holder => $item)
         {
             $result = str_ireplace("[" . $holder . "]", $item, $result);
         }
+        $result = $this->holder->handle($this, $params, $result);
+        if(trim($result) === "") return;
         //分类回复
-        switch($msg['type'])
+        switch($params['type'])
         {
             case 'message': 
-                $this->api->sendMessage($msg['sender_qq'], $result);
+                $this->api->sendMessage($params['sender_qq'], $result);
                 break;
             case 'discuss_message': 
-                $this->api->sendDiscussMessage($msg['discuss_id'], $result);
+                $this->api->sendDiscussMessage($params['discuss_id'], $result);
                 break;
             case 'group_message': 
-                $this->api->sendGroupMessage($msg['gnumber'], $result);
+                $this->api->sendGroupMessage($params['gnumber'], $result);
                 break;
         }
     }

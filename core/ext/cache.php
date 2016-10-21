@@ -44,5 +44,29 @@ class NekoCache
     {
         return json_decode($this->redis->rPop($this->queueKey), true);
     }
+
+    /**
+     * hset
+     */
+    public function hSet($name, $key, $value)
+    {
+        return $this->redis->hSet($name, $key, $value);
+    }
+
+    /**
+     * hget
+     */
+    public function hGet($name, $key)
+    {
+        return $this->redis->hGet($name, $key);
+    }
+
+    /**
+     * hgetall
+     */
+    public function hGetAll($name)
+    {
+        return $this->redis->hGetAll($name);
+    }
 }
 return new NekoCache(json_decode(CONFIG, true));

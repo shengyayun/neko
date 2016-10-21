@@ -101,6 +101,20 @@ class NekoAPI
     }
 
     /**
+     * 禁言
+     * @param  integer  $gnumber 群组的号码
+     * @param  integer  $qq      成员qq
+     * @param  integer $time    禁言时长，最低60秒（单位：秒）
+     * @return array
+     */
+    public function shutupGroupMember($gnumber, $qq, $time = 60)
+    {
+        if(!is_array($qq)) $qq = [$qq];
+        var_dump(func_get_args());
+        return json_decode(file_get_contents("$this->url/shutup_group_member?gnumber=$gnumber&time=$time&member_qq=" . implode(',', $qq)));
+    }
+
+    /**
      * 休息一下
      * @param  integer $sec seconds
      * @return void
